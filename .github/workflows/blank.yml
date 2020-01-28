@@ -21,6 +21,13 @@ jobs:
         echo meow > /tmp/logs/cat.log
         
         false
+    
+    - uses: actions/upload-artifact@v1
+      if: failure()
+      with:
+        name: logs2
+        path: /tmp/logs 
+
     - uses: actions/upload-artifact@v1
       if: failure()
       with:
