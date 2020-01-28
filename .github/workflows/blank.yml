@@ -16,3 +16,11 @@ jobs:
         cat /proc/cpuinfo
         ip link
         ip addr
+        
+        mkdir /tmp/logs
+        echo meow > /tmp/logs/cat.log
+    - uses: actions/upload-artifact@v1
+      if: failure()
+      with:
+        name: logs
+        path: /tmp/logs 
