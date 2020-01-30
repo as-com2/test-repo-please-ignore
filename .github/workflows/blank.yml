@@ -20,7 +20,7 @@ jobs:
         mkdir /tmp/logs
         echo meow > /tmp/logs/cat.log
         
-        false
+        curl -vvv https://ipv6.icanhazip.com
     
     - run: sleep 10 && echo woof > /tmp/logs/dog.log
       if: failure()
