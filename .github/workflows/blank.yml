@@ -27,6 +27,8 @@ jobs:
 
     - uses: actions/upload-artifact@v1
       if: failure()
+      env:
+        key: value
       with:
-        name: logs
+        name: logs-${{env.key}}
         path: /tmp/logs 
