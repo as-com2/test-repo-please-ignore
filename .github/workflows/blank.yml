@@ -7,7 +7,8 @@ jobs:
       matrix:
         foo: [0, 1]
         bar: [yes, no]
-
+    env:
+      MEOW: ${{matrix.foo}}
     runs-on: ubuntu-latest
 
     steps:
@@ -16,12 +17,7 @@ jobs:
       run: echo ${{matrix.foo}}
     - name: Run a multi-line script
       run: |
-        cat /proc/cpuinfo
-        ip link
-        ip addr
+        echo $MEOW
         
         mkdir /tmp/logs
         echo meow > /tmp/logs/cat.log
-        
-        curl -vvv https://ipv6.icanhazip.com
-        
