@@ -6,6 +6,7 @@ jobs:
     strategy:
       matrix:
         foo: [0, 1]
+        bar: [yes, no]
 
     runs-on: ubuntu-latest
 
