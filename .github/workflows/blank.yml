@@ -21,5 +21,6 @@ jobs:
         
         mkdir /tmp/logs
         echo meow > /tmp/logs/cat.log
-        sudo apt list --installed
-        du -h /
+        df -h
+        sudo eatmydata apt remove --auto-remove -y aspnetcore-* dotnet-* libmono-* mono-* msbuild 
+        df -h
