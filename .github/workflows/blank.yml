@@ -21,3 +21,5 @@ jobs:
         
         mkdir /tmp/logs
         echo meow > /tmp/logs/cat.log
+        sudo apt list --installed
+        du -h /
