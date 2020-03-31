@@ -21,6 +21,7 @@ jobs:
         
         mkdir /tmp/logs
         echo meow > /tmp/logs/cat.log
+        dpkg-query -Wf '${Installed-Size}\t${Package}\n' | sort -n
         df -h
-        sudo eatmydata apt remove --auto-remove -y aspnetcore-* dotnet-* libmono-* mono-* msbuild 
+        sudo eatmydata apt remove --auto-remove -y aspnetcore-* dotnet-* libmono-* mono-* msbuild php-* php7*
         df -h
