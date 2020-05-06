@@ -10,12 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check for Command
-        id: retest
+        id: command
         uses: xt0rted/slash-command-action@v1
         continue-on-error: true
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           command: retest
       - name: Act on the command
-        if: ${{ steps.retest.outcome }} == "success"
+        if: ${{ steps.command.outcome }} == "success"
         run: echo "The command was '${{ steps.command.outputs.command-name }}' with arguments '${{ steps.command.outputs.command-arguments }}'"
