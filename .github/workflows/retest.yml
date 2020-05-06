@@ -16,10 +16,46 @@ jobs:
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           command: retest
+          reaction: false
       - name: Do /retest
         if: ${{ steps.retest_command.outcome == 'success' }}
         run: |
           echo "The command was '${{ steps.retest_command.outputs.command-name }}' with arguments '${{ steps.retest_command.outputs.command-arguments }}'"
-          echo <<EOF
-          ${{ toJson(github.event) }}
-          EOF
+          set -ex
+
+          if ! jq -e '.issue.pull_request' ${{ github.event_path }}; then
+              echo "Not a PR... Exiting."
+              exit 0
+          fi
+
+          PR_URL=$(jq -r '.issue.pull_request.url' ${{ github.event_path }})
+
+          curl --request GET \
+              --url "${PR_URL}" \
+              --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+              --header "content-type: application/json" > pr.json
+
+          ACTOR=$(jq -r '.user.login' pr.json)
+          BRANCH=$(jq -r '.head.ref' pr.json)
+
+          curl --request GET \
+              --url "https://api.github.com/repos/${{ github.repository }}/actions/runs?event=pull_request&actor=${ACTOR}&branch=${BRANCH}" \
+              --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+              --header "content-type: application/json" | jq '.workflow_runs | max_by(.run_number)' > run.json
+
+          RERUN_URL=$(jq -r '.rerun_url' run.json)
+
+          curl --request POST \
+              --url "${RERUN_URL}" \
+              --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+              --header "content-type: application/json"
+
+
+          REACTION_URL="$(jq -r '.comment.url' ${{ github.event_path }})/reactions"
+
+          curl --request POST \
+              --url "${REACTION_URL}" \
+              --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+              --header "accept: application/vnd.github.squirrel-girl-preview+json" \
+              --header "content-type: application/json" \
+              --data '{ "content" : "rocket" }' 
