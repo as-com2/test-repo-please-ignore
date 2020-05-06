@@ -3,25 +3,20 @@ name: CI
 on: [push]
 jobs:
   build:
-    strategy:
-      matrix:
-        foo: [0, 1]
-        bar: [yes, no]
     env:
-      MEOW: ${{matrix.foo}}
+      MEOW: meow
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v1
     - name: Run a one-line script
-      run: echo ${{matrix.foo}}
+      run: echo meow
     - name: Run a multi-line script
       run: |
         echo $MEOW
         
         mkdir /tmp/logs
         echo meow > /tmp/logs/cat.log
-        dpkg-query -Wf '${Installed-Size}\t${Package}\n' | sort -n
-        df -h
-        sudo eatmydata apt remove --auto-remove -y aspnetcore-* dotnet-* libmono-* mono-* msbuild php-* php7*
-        df -h
+
+        exit 1
+        
