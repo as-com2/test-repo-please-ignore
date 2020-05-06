@@ -17,5 +17,5 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           command: retest
       - name: Act on the command
-        if: ${{ steps.retest.outcome == "success" }}
+        if: ${{ steps.retest.outcome }} == "success"
         run: echo "The command was '${{ steps.command.outputs.command-name }}' with arguments '${{ steps.command.outputs.command-arguments }}'"
