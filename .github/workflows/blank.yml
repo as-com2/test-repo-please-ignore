@@ -16,3 +16,4 @@ jobs:
         mkdir /tmp/logs
         echo meow > /tmp/logs/cat.log
         df -h
+        exit 1
