@@ -1,6 +1,8 @@
 name: Retest Command
 
-on: issue_comment
+on: 
+  issue_comment:
+    types: [created]
 
 jobs:
   check_comments:
